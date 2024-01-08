@@ -3,16 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTierDemo.Entry", "NTierDemo.Entry\NTierDemo.Entry.csproj", "{97786A7C-234C-45A0-8593-9DD2A44C3151}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NTierDemo.Entry", "NTierDemo.Entry\NTierDemo.Entry.csproj", "{97786A7C-234C-45A0-8593-9DD2A44C3151}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTierDemo.Presentation", "NTierDemo.Presentation\NTierDemo.Presentation.csproj", "{2981423A-F52D-456D-9774-6D7E7DC8B68E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NTierDemo.Presentation", "NTierDemo.Presentation\NTierDemo.Presentation.csproj", "{2981423A-F52D-456D-9774-6D7E7DC8B68E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{919C5523-C63A-4164-A545-3381F4A43FFB}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{33379313-7489-4C8B-B046-B4525CA2AE08}"
-	ProjectSection(SolutionItems) = preProject
-		ToDo.png = ToDo.png
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTierDemo.BusinessLogic", "NTierDemo.BusinessLogic\NTierDemo.BusinessLogic.csproj", "{80650A11-BF03-4E75-A3E6-97D01B8798E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,12 +23,13 @@ Global
 		{2981423A-F52D-456D-9774-6D7E7DC8B68E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2981423A-F52D-456D-9774-6D7E7DC8B68E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2981423A-F52D-456D-9774-6D7E7DC8B68E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80650A11-BF03-4E75-A3E6-97D01B8798E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80650A11-BF03-4E75-A3E6-97D01B8798E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80650A11-BF03-4E75-A3E6-97D01B8798E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80650A11-BF03-4E75-A3E6-97D01B8798E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{33379313-7489-4C8B-B046-B4525CA2AE08} = {919C5523-C63A-4164-A545-3381F4A43FFB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E43E5AA9-0CB5-45B2-88EE-B2F4B407A30F}

@@ -53,6 +53,7 @@ namespace NTierDemo.Presentation
                 BorderBrush = linearGradient,
                 BorderThickness = new Thickness(_windowBorderThickness),
                 CornerRadius = new CornerRadius(_windowBorderRadius),
+                SnapsToDevicePixels = true
             };
 
             return border;
@@ -67,9 +68,12 @@ namespace NTierDemo.Presentation
 
             // Add a side panel
             Border sidePanel = CreateSidePanel();
-
             Grid.SetColumn(sidePanel, 0);
             mainGrid.Children.Add(sidePanel);
+
+            Border contentPanel = CreateContentPanel();
+            Grid.SetColumn(contentPanel, 1);
+            mainGrid.Children.Add(contentPanel);
 
 
             return mainGrid;
@@ -143,8 +147,8 @@ namespace NTierDemo.Presentation
             Border border = new()
             {
                 Background = linearGradient,
-                BorderThickness = new Thickness(_windowBorderThickness),
                 CornerRadius = new CornerRadius(_windowBorderRadius,0,0, _windowBorderRadius),
+                SnapsToDevicePixels = true,
 
                 Child = sidePanel
 
@@ -153,22 +157,34 @@ namespace NTierDemo.Presentation
             return border;
 
         }
-        private T CreatePageElement<T>(IScreenBuilder page) where T : UIElement, IAddChild, new()
-        {
-            T rootElement = new();
 
-            foreach (Active active in page.Actives)
+        private Border CreateContentPanel()
+        {
+            // Wrap in Border
+            LinearGradientBrush linearGradient = new();
+            linearGradient.StartPoint = new Point(0,0.1);
+            linearGradient.EndPoint = new Point(1, 0.6);
+            linearGradient.GradientStops.Add(new()
             {
-                if (active.ControlType == typeof(Button))
-                {
-                    rootElement.AddChild(WindowLogic.CreateButtonElement(active));
-                }
-                else if (active.ControlType == typeof(RadioButton))
-                {
-                    rootElement.AddChild(WindowLogic.CreateRadioButtonElement(active));
-                }
-            }
-            return rootElement;
+                Color = (Color)Application.Current.TryFindResource("C_PBackground1"),
+                Offset = 0
+            });
+            linearGradient.GradientStops.Add(new()
+            {
+                Color = (Color)Application.Current.TryFindResource("C_PBackground2"),
+                Offset = 1
+            });
+
+            Border border = new()
+            {
+                Background = linearGradient,
+                CornerRadius = new CornerRadius(0, _windowBorderRadius, _windowBorderRadius, 0),
+                SnapsToDevicePixels = true,
+
+            };
+
+            return border;
         }
+        
     }
 }

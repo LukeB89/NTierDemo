@@ -1,7 +1,7 @@
 ﻿using FontAwesome.Sharp;
 
 namespace NTierDemo.BusinessLogic;
-public class SideBarBase
+public abstract class SideBarBase
 {
     public List<object> FillRadioButton(string Name, IconChar Icon)
     {

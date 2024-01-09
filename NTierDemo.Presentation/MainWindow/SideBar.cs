@@ -7,7 +7,7 @@ using System;
 namespace NTierDemo.Presentation;
 public class SideBar : SideBarBase, IScreenBuilder
 {
-    public List<Active> Actives { get; set; } = new();
+    public List<Active> Actives { get; } = new();
 
     public SideBar()
     {

@@ -11,6 +11,25 @@ using System.Windows.Media.Imaging;
 namespace NTierDemo.Presentation;
 public static class WindowLogic
 {
+    public static void Handle_ControlBar_ButtonClose()
+    {
+        Application.Current.Shutdown();
+    }
+
+    public static void Handle_ControlBar_ButtonMaximise()
+    {
+        if (Application.Current.MainWindow is Window mainWindow)
+        {
+            SwitchState(mainWindow);
+        }
+    }
+    public static void Handle_ControlBar_ButtonMinimise()
+    {
+        if (Application.Current.MainWindow is Window mainWindow)
+        {
+            SwitchState(mainWindow, true);
+        }
+    }
     public static void OpenScreen(Enums.ScreenNames screenName)
     {
         switch (screenName)
@@ -144,5 +163,22 @@ public static class WindowLogic
         }
 
         return contentStackPanel;
+    }
+
+    public static void SwitchState(Window winObject, bool minimise = false)
+    {
+        switch (winObject.WindowState)
+        {
+            case WindowState.Normal:
+            {
+                winObject.WindowState = minimise ? WindowState.Minimized : WindowState.Maximized;
+                break;
+            }
+            default:
+            {
+                winObject.WindowState = WindowState.Normal;
+                break;
+            }
+        }
     }
 }

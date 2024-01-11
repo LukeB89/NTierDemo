@@ -9,6 +9,7 @@ public class Active
     public Type? ControlType { get; set; }
     public double Height { get; set; }
     public string ImagePath { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
     public int? PosX { get; set; }
     public int? PosY { get; set; }
     public string Style { get; set; } = string.Empty;

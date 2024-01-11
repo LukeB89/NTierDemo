@@ -20,7 +20,7 @@ public class MainWindow : Window
     private readonly double _windowControlBarHeight = 25;
     private readonly double _windowCaptionHeight = 35;
     private readonly double _windowLeftEdgeMargin = 15;
-    private readonly double _windowRightEdgeMargin = 5;
+    private readonly double _windowRightEdgeMargin = 10;
 
     public MainWindow()
     {
@@ -96,8 +96,6 @@ public class MainWindow : Window
         WindowStyle = WindowStyle.None;
         AllowsTransparency = true;
         Background = Brushes.Transparent;
-        MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
-        MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
     }
 
     private Border CreateSidePanel()
@@ -126,19 +124,9 @@ public class MainWindow : Window
 
         // Add some content to the side panel
         sidePanel.Children.Add(logoPanel);
-        //sidePanel.Children.Add(CreatePageElement<StackPanel>(new SideBar()));
+
         IScreenBuilder page = new SideBar();
-        foreach (Active active in page.Actives)
-        {
-            if (active.ControlType == typeof(Button))
-            {
-                sidePanel.Children.Add(WindowLogic.CreateButtonElement(active));
-            }
-            else if (active.ControlType == typeof(RadioButton))
-            {
-                sidePanel.Children.Add(WindowLogic.CreateRadioButtonElement(active));
-            }
-        }
+        WindowLogic.FillControllWithActives(ref sidePanel, page.Actives);
 
         // Wrap in Border
         LinearGradientBrush linearGradient = new();
@@ -222,6 +210,9 @@ public class MainWindow : Window
         };
         sidePanel.MouseLeftButtonDown += Handle_ControlBar_MouseLeftButtonDown;
         sidePanel.MouseEnter += Handle_ControlBar_MouseEnter;
+
+        IScreenBuilder page = new ControlBar();
+        WindowLogic.FillControllWithActives(ref sidePanel, page.Actives);
 
         return sidePanel;
     }

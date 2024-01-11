@@ -221,8 +221,15 @@ public class MainWindow : Window
             Margin = new(0, 0, _windowRightEdgeMargin, 0),
         };
         sidePanel.MouseLeftButtonDown += Handle_ControlBar_MouseLeftButtonDown;
+        sidePanel.MouseEnter += Handle_ControlBar_MouseEnter;
 
         return sidePanel;
+    }
+
+    private void Handle_ControlBar_MouseEnter(object sender, MouseEventArgs e)
+    {
+        MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+        MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
     }
 
     private void Handle_ControlBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

@@ -239,7 +239,7 @@ public class MainWindow : Window
             // double click chnages minmax state
             if (ResizeMode == ResizeMode.CanResize || ResizeMode == ResizeMode.CanResizeWithGrip)
             {
-                SwitchState();
+                WindowLogic.SwitchState(this);
             }
         }
         else
@@ -251,21 +251,4 @@ public class MainWindow : Window
 
     [DllImport("user32.dll")]
     public static extern IntPtr SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
-
-    private void SwitchState()
-    {
-        switch (WindowState)
-        {
-            case WindowState.Normal:
-                {
-                    WindowState = WindowState.Maximized;
-                    break;
-                }
-            case WindowState.Maximized:
-                {
-                    WindowState = WindowState.Normal;
-                    break;
-                }
-        }
-    }
 }

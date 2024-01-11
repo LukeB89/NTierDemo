@@ -3,9 +3,10 @@ using NTierDemo.BusinessLogic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Markup;
 using System.Windows.Media.Imaging;
 
 namespace NTierDemo.Presentation;
@@ -55,28 +56,36 @@ public static class WindowLogic
         }
     }
 
-    public static Button CreateButtonElement(Active active)
+    public static Button CreateButtonElement(Active active, string fillParameter = "")
     {
-        Button button = new()
+        Button button = CreateButtonBaseFromActive<Button>(active);
+
+        if (string.IsNullOrWhiteSpace(active.Content))
         {
-            Content = CreateImageTextContent(active.Content, active.ImagePath, active.Width, active.Height),
-            Width = active.Width,
-            Height = active.Height
-        };
-        button.Click += (sender, e) => active.Click?.Invoke();
+
+            List<object> buttonContent = active.Fill?.Invoke(fillParameter) ?? new();
+            if (buttonContent.Count != 0)
+            {
+                StackPanel stackPanel = CreateButtonDataFromControlData<ButtonData>(buttonContent.First());
+
+                button.Content = stackPanel;
+            }
+            else
+            {
+                throw new NotImplementedException($"The Button Fill(\"{fillParameter}\") returned no data");
+            }
+        }
+        else
+        {
+            button.Content = CreateImageTextContent(active.Content, active.ImagePath, active.Width, active.Height);
+        }
 
         return button;
     }
 
     public static RadioButton CreateRadioButtonElement(Active active, string fillParameter = "")
     {
-        RadioButton button = new()
-        {
-            Style = (Style)Application.Current.TryFindResource(active.Style),
-            Tag = Application.Current.TryFindResource(active.Tag),
-        };
-
-        button.Click += (sender, e) => active.Click?.Invoke();
+        RadioButton button = CreateButtonBaseFromActive<RadioButton>(active);
 
         if (string.IsNullOrWhiteSpace(active.Content))
         {
@@ -85,27 +94,8 @@ public static class WindowLogic
             if (buttonContent.Count != 0)
             {
                 RadioButtonData data = buttonContent.First() as RadioButtonData ?? new();
+                StackPanel stackPanel = CreateButtonDataFromControlData<RadioButtonData>(data);
                 button.IsChecked = data.IsChecked;
-
-                StackPanel stackPanel = new()
-                {
-                    Orientation = Orientation.Horizontal
-                };
-
-                IconImage iconImage = new()
-                {
-                    Style = (Style)(Application.Current.TryFindResource(data.IconStyle)),
-                    Icon = (IconChar)data.IconName
-                };
-
-                TextBlock textBlock = new()
-                {
-                    Text = data.Content,
-                    Style = (Style)Application.Current.TryFindResource(data.Style)
-                };
-
-                stackPanel.Children.Add(iconImage);
-                stackPanel.Children.Add(textBlock);
                 button.Content = stackPanel;
             }
             else
@@ -180,5 +170,71 @@ public static class WindowLogic
                 break;
             }
         }
+    }
+
+    public static void FillControllWithActives<T>(ref T rootCtrl, List<Active> actives) where T : IAddChild
+    {
+        foreach (Active active in actives)
+        {
+            if (active.ControlType == typeof(Button))
+            {
+                rootCtrl.AddChild(CreateButtonElement(active));
+            }
+            else if (active.ControlType == typeof(RadioButton))
+            {
+                rootCtrl.AddChild(CreateRadioButtonElement(active));
+            }
+        }
+    }
+
+    private static T CreateButtonBaseFromActive<T>(Active active) where T : ButtonBase, new()
+    {
+        ArgumentNullException.ThrowIfNull(active, nameof(active));
+
+        T button = new()
+        {
+            Style = (Style)Application.Current.TryFindResource(active.Style),
+            Tag = Application.Current.TryFindResource(active.Tag),
+        };
+
+        button.Click += (sender, e) => active.Click?.Invoke();
+
+        return button;
+    }
+
+    private static StackPanel CreateButtonDataFromControlData<T>(object controlData) where T : IControlData, IIconData, new()
+    {
+        ArgumentNullException.ThrowIfNull(controlData, nameof(controlData));
+
+        T data = (T)controlData ?? new();
+
+        StackPanel stackPanel = new()
+        {
+            Orientation = Orientation.Horizontal
+        };
+
+        if (!string.IsNullOrWhiteSpace(data.IconStyle))
+        {
+            IconImage iconImage = new()
+            {
+                Style = (Style)(Application.Current.TryFindResource(data.IconStyle)),
+                Icon = (IconChar)data.IconName
+            };
+
+            stackPanel.Children.Add(iconImage);
+        }
+        
+        if (!string.IsNullOrWhiteSpace(data.Content))
+        {
+            TextBlock textBlock = new()
+            {
+                Text = data.Content,
+                Style = (Style)Application.Current.TryFindResource(data.Style)
+            };
+
+            stackPanel.Children.Add(textBlock);
+        }
+        
+        return stackPanel;
     }
 }

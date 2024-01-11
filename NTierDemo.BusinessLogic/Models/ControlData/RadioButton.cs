@@ -1,5 +1,5 @@
 ﻿namespace NTierDemo.BusinessLogic;
-public class RadioButtonData
+public class RadioButtonData : IControlData, IIconData, IControlCheckable
 {
     public string Content { get; set; } = string.Empty;
     public string Style {  get; set; } = string.Empty;

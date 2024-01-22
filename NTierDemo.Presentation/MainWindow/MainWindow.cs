@@ -6,6 +6,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Interop;
+using FontAwesome.Sharp;
+using System.Windows.Shapes;
 
 namespace NTierDemo.Presentation;
 
@@ -21,9 +23,17 @@ public class MainWindow : Window
     private readonly double _windowCaptionHeight = 35;
     private readonly double _windowLeftEdgeMargin = 15;
     private readonly double _windowRightEdgeMargin = 10;
+    private readonly double _windowTitleIconSize = 20;
+    private readonly double _windowTitleFontSize = 16;
+    private readonly double _windowUserFontSize = 16;
+
+    private string _loggedInUser;
 
     public MainWindow()
     {
+
+        _loggedInUser = "Luke Byrne"; // this will be altered when login is implemented
+
         // This is the entry screen. It will setup the screen defaults, add the side panel and the initial content
         InitializeWindow();
         Border rootElement = AddWindowBorder();
@@ -31,6 +41,7 @@ public class MainWindow : Window
         rootElement.Child = MainLayout();
 
         Content = rootElement;
+
     }
 
     private Border AddWindowBorder()
@@ -167,8 +178,12 @@ public class MainWindow : Window
         contentGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
 
         StackPanel ctrlBar = CreateControlBar();
-        Grid.SetColumn(ctrlBar, 0);
+        Grid.SetRow(ctrlBar, 0);
         contentGrid.Children.Add(ctrlBar);
+
+        Grid titleBar = CreateTitleBar();
+        Grid.SetRow(titleBar, 1);
+        contentGrid.Children.Add(titleBar);
 
         // Wrap in Border
         LinearGradientBrush linearGradient = new();
@@ -196,6 +211,149 @@ public class MainWindow : Window
         };
 
         return border;
+    }
+
+    private Grid CreateTitleBar()
+    {
+        Grid titleBar = new();
+
+        titleBar.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+        titleBar.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+        // Title section
+        StackPanel title = new()
+        {
+            Orientation = Orientation.Horizontal,
+            VerticalAlignment = VerticalAlignment.Center,
+        };
+
+        IconImage titleIcon = new()
+        {
+            Icon = IconChar.Home,
+            Height = _windowTitleIconSize,
+            Width = _windowTitleIconSize,
+            Foreground = (Brush)Application.Current.TryFindResource("C_Title2"),
+            Margin = new Thickness(35, 0, 10, 0)
+        };
+        title.Children.Add(titleIcon);
+
+        TextBlock titleText = new()
+        {
+            Text = "Home",
+            Foreground = (Brush)Application.Current.TryFindResource("C_Title2"),
+            FontSize = _windowTitleFontSize,
+            FontFamily = new FontFamily("Calibri"),
+            FontWeight = FontWeights.Medium,
+            VerticalAlignment= VerticalAlignment.Center,
+        };
+        title.Children.Add(titleText);
+
+        Grid.SetColumn(title, 0);
+        titleBar.Children.Add(title);
+
+        // User Control Section
+        StackPanel userCtrl = new()
+        {
+            Orientation = Orientation.Horizontal,
+            FlowDirection = FlowDirection.RightToLeft,
+            VerticalAlignment = VerticalAlignment.Center,
+            Margin = new Thickness(0,0,10,0)
+        };
+
+        Button userButton = new()
+        {
+            Style = (Style)Application.Current.TryFindResource("userCtrlButton"),
+            Tag = Application.Current.TryFindResource("C_Pallet1")
+        };
+
+        IconImage butnIcon = new()
+        {
+            Icon = IconChar.AngleDown,
+            Style = (Style)Application.Current.TryFindResource("userCtrlButtonIcon"),
+        };
+        userButton.Content = butnIcon;
+        userCtrl.Children.Add(userButton);
+
+        TextBlock userText = new()
+        {
+            Text = _loggedInUser,
+            Foreground = (Brush)Application.Current.TryFindResource("C_Title3"),
+            FontSize = _windowUserFontSize,
+            FontFamily = new FontFamily("Calibri"),
+            FontWeight = FontWeights.Medium,
+            VerticalAlignment = VerticalAlignment.Center,
+        };
+        userCtrl.Children.Add(userText);
+
+        // Profile Picture
+        Ellipse profile = new()
+        {
+            Width = _windowCaptionHeight,
+            Height = _windowCaptionHeight,
+            Stroke = (Brush)Application.Current.TryFindResource("C_Pallet1"),
+            StrokeThickness = 2,
+            Margin = new Thickness(10,0,10,0),
+        };
+
+        // Picture to be replaced later
+        IconImage iconImage = new()
+        {
+            Icon = IconChar.UserAstronaut,
+            Foreground = (Brush)Application.Current.TryFindResource("C_Pallet2")
+        };
+
+        profile.Fill = new VisualBrush()
+        {
+            Visual = iconImage
+        };
+        userCtrl.Children.Add(profile);
+
+        userButton = new()
+        {
+            Style = (Style)Application.Current.TryFindResource("userCtrlButton"),
+            Tag = Application.Current.TryFindResource("C_Pallet3")
+        };
+
+        butnIcon = new()
+        {
+            Icon = IconChar.Clock,
+            Style = (Style)Application.Current.TryFindResource("userCtrlButtonIcon"),
+        };
+        userButton.Content = butnIcon;
+        userCtrl.Children.Add(userButton);
+
+        userButton = new()
+        {
+            Style = (Style)Application.Current.TryFindResource("userCtrlButton"),
+            Tag = Application.Current.TryFindResource("C_Pallet4")
+        };
+
+        butnIcon = new()
+        {
+            Icon = IconChar.Envelope,
+            Style = (Style)Application.Current.TryFindResource("userCtrlButtonIcon"),
+        };
+        userButton.Content = butnIcon;
+        userCtrl.Children.Add(userButton);
+
+        userButton = new()
+        {
+            Style = (Style)Application.Current.TryFindResource("userCtrlButton"),
+            Tag = Application.Current.TryFindResource("C_Pallet5")
+        };
+
+        butnIcon = new()
+        {
+            Icon = IconChar.Bell,
+            Style = (Style)Application.Current.TryFindResource("userCtrlButtonIcon"),
+        };
+        userButton.Content = butnIcon;
+        userCtrl.Children.Add(userButton);
+
+        Grid.SetColumn(userCtrl, 1);
+        titleBar.Children.Add(userCtrl);
+
+        return titleBar;
     }
 
     private StackPanel CreateControlBar()

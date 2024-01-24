@@ -33,25 +33,31 @@ public static class WindowLogic
     }
     public static void OpenScreen(Enums.ScreenNames screenName)
     {
+        MainWindow mainWindow = Application.Current.MainWindow as MainWindow ?? new();
         switch (screenName)
         {
             case Enums.ScreenNames.Unknown:
                 MessageBox.Show($"Unknown Screen Selected");
                 break;
             case Enums.ScreenNames.ToDo:
-                MessageBox.Show($"ToDo Screen is opening");
+                mainWindow.TitleText = "ToDo";
+                mainWindow.IconType = IconChar.ListCheck;
                 break;
             case Enums.ScreenNames.Calculator:
-                MessageBox.Show($"Calculator Screen is opening");
+                mainWindow.TitleText = "Calculator";
+                mainWindow.IconType = IconChar.Calculator;
                 break;
             case Enums.ScreenNames.Calendar:
-                MessageBox.Show($"Calendar Screen is opening");
+                mainWindow.TitleText = "Calendar";
+                mainWindow.IconType = IconChar.CalendarDays;
                 break;
             case Enums.ScreenNames.Clock:
-                MessageBox.Show($"Clock Screen is opening");
+                mainWindow.TitleText = "Clock";
+                mainWindow.IconType = IconChar.Clock;
                 break;
             case Enums.ScreenNames.Weather:
-                MessageBox.Show($"Weather Screen is opening");
+                mainWindow.TitleText = "Weather";
+                mainWindow.IconType = IconChar.CloudSun;
                 break;
         }
     }

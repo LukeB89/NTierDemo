@@ -185,6 +185,10 @@ public class MainWindow : Window
         Grid.SetRow(titleBar, 1);
         contentGrid.Children.Add(titleBar);
 
+        ContentControl mainContent = CreateMainContent();
+        Grid.SetRow(mainContent, 2);
+        contentGrid.Children.Add(mainContent);
+
         // Wrap in Border
         LinearGradientBrush linearGradient = new();
         linearGradient.StartPoint = new Point(0,0.1);
@@ -211,6 +215,14 @@ public class MainWindow : Window
         };
 
         return border;
+    }
+
+    private ContentControl CreateMainContent()
+    {
+        return new ContentControl()
+        {
+            Margin = new Thickness(_windowMainContentMargin)
+        };
     }
 
     private Grid CreateTitleBar()

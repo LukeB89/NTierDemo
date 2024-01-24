@@ -8,11 +8,14 @@ using System.Windows.Media;
 using System.Windows.Interop;
 using FontAwesome.Sharp;
 using System.Windows.Shapes;
+using System.Windows.Data;
+using System.ComponentModel;
 
 namespace NTierDemo.Presentation;
 
-public class MainWindow : Window
+public class MainWindow : Window, INotifyPropertyChanged
 {
+    #region Readonly Fields
 
     private readonly double _applicationDefaultHeight = 720;
     private readonly double _applicationDefaultWidth = 1080;
@@ -26,8 +29,47 @@ public class MainWindow : Window
     private readonly double _windowTitleIconSize = 20;
     private readonly double _windowTitleFontSize = 16;
     private readonly double _windowUserFontSize = 16;
+    private readonly double _windowMainContentMargin = 25;
+
+    #endregion
+
+    #region Fields
 
     private string _loggedInUser;
+    private string _titleText;
+    private IconChar _iconType;
+
+    #endregion
+
+    #region Window Properties
+
+    public string TitleText
+    {
+        get { return _titleText; }
+        set
+        {
+            if (_titleText != value)
+            {
+                _titleText = value;
+                NotifyPropertyChanged(nameof(TitleText));
+            }
+        }
+    }
+
+    public IconChar IconType
+    {
+        get { return _iconType; }
+        set
+        {
+            if (_iconType != value)
+            {
+                _iconType = value;
+                NotifyPropertyChanged(nameof(IconType));
+            }
+        }
+    }
+
+    #endregion
 
     public MainWindow()
     {
@@ -38,9 +80,14 @@ public class MainWindow : Window
         InitializeWindow();
         Border rootElement = AddWindowBorder();
 
+        DataContext = this;
+
         rootElement.Child = MainLayout();
 
         Content = rootElement;
+
+        _titleText = "ToDo";
+        _iconType = IconChar.ListCheck;
 
     }
 
@@ -241,23 +288,23 @@ public class MainWindow : Window
 
         IconImage titleIcon = new()
         {
-            Icon = IconChar.Home,
             Height = _windowTitleIconSize,
             Width = _windowTitleIconSize,
             Foreground = (Brush)Application.Current.TryFindResource("C_Title2"),
             Margin = new Thickness(35, 0, 10, 0)
         };
+        titleIcon.SetBinding(IconImage.IconProperty, new Binding(nameof(IconType)));
         title.Children.Add(titleIcon);
 
         TextBlock titleText = new()
         {
-            Text = "Home",
             Foreground = (Brush)Application.Current.TryFindResource("C_Title2"),
             FontSize = _windowTitleFontSize,
             FontFamily = new FontFamily("Calibri"),
             FontWeight = FontWeights.Medium,
             VerticalAlignment= VerticalAlignment.Center,
         };
+        titleText.SetBinding(TextBlock.TextProperty, new Binding(nameof(TitleText)));
         title.Children.Add(titleText);
 
         Grid.SetColumn(title, 0);
@@ -387,6 +434,19 @@ public class MainWindow : Window
         return sidePanel;
     }
 
+    #region iNotifyPropertyChange Implementation
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    private void NotifyPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    #endregion
+
+    #region Window Event Handlers
+
     private void Handle_ControlBar_MouseEnter(object sender, MouseEventArgs e)
     {
         MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
@@ -412,4 +472,6 @@ public class MainWindow : Window
 
     [DllImport("user32.dll")]
     public static extern IntPtr SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
+
+    #endregion
 }

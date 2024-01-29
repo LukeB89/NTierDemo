@@ -17,7 +17,7 @@ public class ControlBar : ControlBarBase, IScreenBuilder
         active.Style = "ctrlBarButton";
         active.Tag = "C_Pallet4";
         active.Click += WindowLogic.Handle_ControlBar_ButtonClose;
-        active.Fill += (arg) => FillButton(IconChar.Xmark);
+        active.Fill += (arg) => FillButton((int)IconChar.Xmark);
         Actives.Add(active);
 
         active = new();
@@ -26,7 +26,7 @@ public class ControlBar : ControlBarBase, IScreenBuilder
         active.Style = "ctrlBarButton";
         active.Tag = "C_Pallet6";
         active.Click += WindowLogic.Handle_ControlBar_ButtonMaximise;
-        active.Fill += (arg) => FillButton(IconChar.WindowMaximize);
+        active.Fill += (arg) => FillButton((int)IconChar.WindowMaximize);
         Actives.Add(active);
 
         active = new();
@@ -35,7 +35,7 @@ public class ControlBar : ControlBarBase, IScreenBuilder
         active.Style = "ctrlBarButton";
         active.Tag = "C_Pallet8";
         active.Click += WindowLogic.Handle_ControlBar_ButtonMinimise;
-        active.Fill += (arg) => FillButton(IconChar.WindowMinimize);
+        active.Fill += (arg) => FillButton((int)IconChar.WindowMinimize);
         Actives.Add(active);
     }
 }

@@ -16,7 +16,7 @@ public class SideBar : SideBarBase, IScreenBuilder
         active.Style = "menuButton";
         active.Tag = "C_Pallet1";
         active.Click += () => WindowLogic.OpenScreen(Enums.ScreenNames.ToDo);
-        active.Fill += (arg) => FillRadioButton("ToDo", IconChar.ListCheck);
+        active.Fill += (arg) => FillRadioButton("ToDo", (int)IconChar.ListCheck);
         Actives.Add(active);
 
         active = new();
@@ -24,7 +24,7 @@ public class SideBar : SideBarBase, IScreenBuilder
         active.Style = "menuButton";
         active.Tag = "C_Pallet2";
         active.Click += () => WindowLogic.OpenScreen(Enums.ScreenNames.Calculator);
-        active.Fill += (arg) => FillRadioButton("Calculator", IconChar.Calculator);
+        active.Fill += (arg) => FillRadioButton("Calculator", (int)IconChar.Calculator);
         Actives.Add(active);
 
         active = new();
@@ -32,7 +32,7 @@ public class SideBar : SideBarBase, IScreenBuilder
         active.Style = "menuButton";
         active.Tag = "C_Pallet3";
         active.Click += () => WindowLogic.OpenScreen(Enums.ScreenNames.Calendar);
-        active.Fill += (arg) => FillRadioButton("Calendar", IconChar.CalendarDays);
+        active.Fill += (arg) => FillRadioButton("Calendar", (int)IconChar.CalendarDays);
         Actives.Add(active);
 
         active = new();
@@ -40,7 +40,7 @@ public class SideBar : SideBarBase, IScreenBuilder
         active.Style = "menuButton";
         active.Tag = "C_Pallet4";
         active.Click += () => WindowLogic.OpenScreen(Enums.ScreenNames.Clock);
-        active.Fill += (arg) => FillRadioButton("Clock", IconChar.Clock);
+        active.Fill += (arg) => FillRadioButton("Clock", (int)IconChar.Clock);
         Actives.Add(active);
 
         active = new();
@@ -48,7 +48,7 @@ public class SideBar : SideBarBase, IScreenBuilder
         active.Style = "menuButton";
         active.Tag = "C_Pallet5";
         active.Click += () => WindowLogic.OpenScreen(Enums.ScreenNames.Weather);
-        active.Fill += (arg) => FillRadioButton("Weather", IconChar.CloudSun);
+        active.Fill += (arg) => FillRadioButton("Weather", (int)IconChar.CloudSun);
         Actives.Add(active);
 
     }

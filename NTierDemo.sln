@@ -6,8 +6,11 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NTierDemo.Entry", "NTierDemo.Entry\NTierDemo.Entry.csproj", "{97786A7C-234C-45A0-8593-9DD2A44C3151}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NTierDemo.Presentation", "NTierDemo.Presentation\NTierDemo.Presentation.csproj", "{2981423A-F52D-456D-9774-6D7E7DC8B68E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{80650A11-BF03-4E75-A3E6-97D01B8798E7} = {80650A11-BF03-4E75-A3E6-97D01B8798E7}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTierDemo.BusinessLogic", "NTierDemo.BusinessLogic\NTierDemo.BusinessLogic.csproj", "{80650A11-BF03-4E75-A3E6-97D01B8798E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NTierDemo.BusinessLogic", "NTierDemo.BusinessLogic\NTierDemo.BusinessLogic.csproj", "{80650A11-BF03-4E75-A3E6-97D01B8798E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

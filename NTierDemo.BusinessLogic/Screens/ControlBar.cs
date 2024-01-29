@@ -1,17 +1,15 @@
-﻿using FontAwesome.Sharp;
-using System.Windows;
-
+﻿
 namespace NTierDemo.BusinessLogic;
 public abstract class ControlBarBase
 {
-    public List<object> FillButton(IconChar Icon)
+    public List<object> FillButton(int Icon)
     {
         List<object> root = new();
 
         ButtonData button = new();
 
         button.IconStyle = "ctrlBarButtonIcon";
-        button.IconName = (int)Icon;
+        button.IconName = Icon;
         root.Add(button);
 
         return root;

@@ -1,9 +1,8 @@
-﻿using FontAwesome.Sharp;
-
+﻿
 namespace NTierDemo.BusinessLogic;
 public abstract class SideBarBase
 {
-    public List<object> FillRadioButton(string Name, IconChar Icon)
+    public List<object> FillRadioButton(string Name, int Icon)
     {
         List<object> root = new();
 
@@ -13,7 +12,7 @@ public abstract class SideBarBase
         radioButton.Style = "menuButtonText";
         radioButton.IsChecked = Name.Equals("ToDo", StringComparison.OrdinalIgnoreCase);
         radioButton.IconStyle = "menuButtonIcon";
-        radioButton.IconName = (int)Icon;
+        radioButton.IconName = Icon;
         root.Add(radioButton);
 
         return root;

@@ -62,6 +62,19 @@ public static class WindowLogic
         }
     }
 
+    public static IScreenBuilder? GetScreenFromName(Enums.ScreenNames screenName)
+    {
+        switch (screenName)
+        {
+            case Enums.ScreenNames.ToDo:
+                return new ToDo();
+            case Enums.ScreenNames.ToDoContent:
+                return new ToDoContent();
+            default:
+                return null;
+        }
+    }
+
     public static Button CreateButtonElement(Active active, string fillParameter = "")
     {
         Button button = CreateButtonBaseFromActive<Button>(active);

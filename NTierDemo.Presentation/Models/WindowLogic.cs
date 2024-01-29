@@ -190,6 +190,38 @@ public static class WindowLogic
             {
                 rootCtrl.AddChild(CreateRadioButtonElement(active));
             }
+            else if (active.ControlType == typeof(ToDoCard))
+            {
+                CreateToDoCards(ref rootCtrl, active);
+            }
+        }
+    }
+
+    private static void CreateToDoCards<T>(ref T rootCtrl, Active active) where T : IAddChild
+    {
+        List<object> cards = active.Fill?.Invoke("") ?? new();
+
+        if (cards.Count == 0) throw new ArgumentException($"{nameof(active.Fill)} must return at least one {nameof(ToDoCardData)}");
+
+        foreach (ToDoCardData card in cards.Cast<ToDoCardData>())
+        {
+            ToDoCard cardControl = new()
+            {
+                LabelContent = card.LabelContent,
+                CardBackground = (card.Background.StartsWith('#') ? Converters.GetBrushFromHex(card.Background) : (Brush)Application.Current.TryFindResource(card.Background)) ?? Brushes.Transparent,
+                CardBorderBrush = (card.BorderBrush.StartsWith('#') ? Converters.GetBrushFromHex(card.BorderBrush) : (Brush)Application.Current.TryFindResource(card.BorderBrush)) ?? Brushes.Transparent,
+                CardBorderThickness = Converters.GetThicknessFromData(card.BorderThickness),
+                CardCornerRadius = Converters.GetCornerRadiusFromData(card.CornerRadius),
+                CardMargin = Converters.GetThicknessFromData(card.Margin),
+                CardForeground = (card.BorderBrush.StartsWith('#') ? Converters.GetBrushFromHex(card.BorderBrush) : (Brush)Application.Current.TryFindResource(card.BorderBrush)) ?? Brushes.Transparent,
+                CardHeight = active.Height,
+                CardWidth = active.Width
+            };
+
+            // Add the Card control to parent
+            rootCtrl.AddChild(cardControl);
+        }
+    }
         }
     }
 

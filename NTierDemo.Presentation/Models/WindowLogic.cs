@@ -221,8 +221,63 @@ public static class WindowLogic
             // Add the Card control to parent
             rootCtrl.AddChild(cardControl);
         }
-    }
+    private static Grid CreateGridContainerFromActive(Active container)
+    {
+        Grid gridContainer = new()
+        {
+            Width = container.Width,
+            Height = container.Height,
+        };
+        List<object> gridColumnDefinitions = container.Fill?.Invoke("") ?? new();
+        if (gridColumnDefinitions.Count == 0)
+        {
+            throw new ArgumentException($"Parsing Grid is incomplete. {nameof(GridColumnData)} is not supplied");
         }
+        for (int i = 0; i < gridColumnDefinitions.Count; i++)
+        {
+            GridColumnData columnData = (GridColumnData)gridColumnDefinitions[i];
+            if (columnData.ColumnWidth <= 0)
+            {
+                throw new ArgumentException($"{nameof(GridColumnData.ColumnWidth)} must be a positive number > 0");
+            }
+            else if (columnData.ColumnWidth > 10)
+            {
+                gridContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(columnData.ColumnWidth) });
+            }
+            else
+            {
+                gridContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(columnData.ColumnWidth, GridUnitType.Star) });
+            }
+
+            UIElement containerControl;
+
+            if (columnData.ContainerType is Enums.ContainerTypes.Canvas)
+            {
+                throw new NotImplementedException(nameof(Enums.ContainerTypes.Canvas));
+            }
+            else if (columnData.ContainerType is Enums.ContainerTypes.Grid)
+            {
+                throw new NotImplementedException(nameof(Enums.ContainerTypes.Grid));
+    }
+            else if (columnData.ContainerType is Enums.ContainerTypes.StackPanel)
+            {
+                StackPanel stackPanel = new()
+                {
+                    VerticalAlignment = columnData.ColumnWidth > 10 ? VerticalAlignment.Stretch : VerticalAlignment.Center
+                };
+                FillControllWithActives(ref stackPanel, GetScreenFromName(columnData.ScreenName)?.Actives ?? new());
+                containerControl = stackPanel;
+            }
+            else
+            {
+                throw new NotImplementedException(nameof(Enums.ContainerTypes.Unknown));
+        }
+
+            Grid.SetColumn(containerControl, i);
+            gridContainer.Children.Add(containerControl);
+        }
+
+        return gridContainer;
     }
 
     private static T CreateButtonBaseFromActive<T>(Active active) where T : ButtonBase, new()

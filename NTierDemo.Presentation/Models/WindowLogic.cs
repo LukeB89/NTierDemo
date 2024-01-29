@@ -1,5 +1,6 @@
 ﻿using FontAwesome.Sharp;
 using NTierDemo.BusinessLogic;
+using NTierDemo.BusinessLogic.DTOs.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Markup;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace NTierDemo.Presentation;
@@ -42,10 +44,12 @@ public static class WindowLogic
             case Enums.ScreenNames.ToDo:
                 mainWindow.TitleText = "ToDo";
                 mainWindow.IconType = IconChar.ListCheck;
+                mainWindow.ChildView = CreateChildView(new ToDo());
                 break;
             case Enums.ScreenNames.Calculator:
                 mainWindow.TitleText = "Calculator";
                 mainWindow.IconType = IconChar.Calculator;
+                mainWindow.ChildView = CreateChildView(new Calculator());
                 break;
             case Enums.ScreenNames.Calendar:
                 mainWindow.TitleText = "Calendar";
@@ -234,6 +238,39 @@ public static class WindowLogic
             // Add the Card control to parent
             rootCtrl.AddChild(cardControl);
         }
+    }
+
+    public static IAddChild CreateChildView(IScreenBuilder childPage)
+    {
+        
+        ArgumentNullException.ThrowIfNull(nameof(childPage));
+        ArgumentNullException.ThrowIfNull(nameof(childPage.Actives));
+        if (childPage.Actives.Count > 1)
+        {
+            throw new ArgumentException($"ChildView screens should contain only 1 active. See summary for {nameof(CreateChildView)}");
+        }
+
+        IAddChild childPanel;
+
+        Active container = childPage.Actives[0];
+
+        if (container.ControlType == typeof(Grid))
+        {
+            childPanel = CreateGridContainerFromActive(container);
+        }
+        else
+        {
+            Grid gridContainer = new()
+            {
+                Width = double.NaN,
+                Height = double.NaN,
+            };
+            childPanel = gridContainer;
+        }
+
+        return childPanel;
+    }
+
     private static Grid CreateGridContainerFromActive(Active container)
     {
         Grid gridContainer = new()

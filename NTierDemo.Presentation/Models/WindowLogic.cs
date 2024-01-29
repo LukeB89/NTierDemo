@@ -103,6 +103,9 @@ public static class WindowLogic
             button.Content = CreateImageTextContent(active.Content, active.ImagePath, active.Width, active.Height);
         }
 
+        Canvas.SetLeft(button,active.PosX);
+        Canvas.SetBottom(button,active.PosY);
+
         return button;
     }
 
@@ -308,7 +311,7 @@ public static class WindowLogic
             else if (columnData.ContainerType is Enums.ContainerTypes.Grid)
             {
                 throw new NotImplementedException(nameof(Enums.ContainerTypes.Grid));
-    }
+            }
             else if (columnData.ContainerType is Enums.ContainerTypes.StackPanel)
             {
                 StackPanel stackPanel = new()
@@ -321,7 +324,7 @@ public static class WindowLogic
             else
             {
                 throw new NotImplementedException(nameof(Enums.ContainerTypes.Unknown));
-        }
+            }
 
             Grid.SetColumn(containerControl, i);
             gridContainer.Children.Add(containerControl);

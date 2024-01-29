@@ -1,17 +1,17 @@
-﻿using System;
-using System.Windows;
-
+﻿
 namespace NTierDemo.BusinessLogic;
 
 public class Active
 {
     public string Content { get; set; } = string.Empty;
     public Type? ControlType { get; set; }
+    public double CornerRadius { get; set; }
     public double Height { get; set; }
     public string ImagePath { get; set; } = string.Empty;
+    public double Margin { get; set; }
     public string Name { get; set; } = string.Empty;
-    public int? PosX { get; set; }
-    public int? PosY { get; set; }
+    public double PosX { get; set; }
+    public double PosY { get; set; }
     public string Style { get; set; } = string.Empty;
     public string Tag { get; set; } = string.Empty;
     public double Width { get; set; }

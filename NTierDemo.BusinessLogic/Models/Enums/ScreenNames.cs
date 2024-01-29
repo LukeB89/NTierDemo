@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NTierDemo.BusinessLogic;
+﻿namespace NTierDemo.BusinessLogic;
 
 public static partial class Enums
 {
@@ -12,6 +6,7 @@ public static partial class Enums
     {
         Unknown = 0,
         ToDo,
+        ToDoContent,
         Calculator,
         Calendar,
         Clock,

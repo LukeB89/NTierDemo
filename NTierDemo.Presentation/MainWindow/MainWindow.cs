@@ -10,6 +10,7 @@ using FontAwesome.Sharp;
 using System.Windows.Shapes;
 using System.Windows.Data;
 using System.ComponentModel;
+using System.Windows.Markup;
 
 namespace NTierDemo.Presentation;
 
@@ -29,7 +30,7 @@ public class MainWindow : Window, INotifyPropertyChanged
     private readonly double _windowTitleIconSize = 20;
     private readonly double _windowTitleFontSize = 16;
     private readonly double _windowUserFontSize = 16;
-    private readonly double _windowMainContentMargin = 25;
+    private readonly double _windowMainContentMargin = 10;
 
     #endregion
 
@@ -38,6 +39,7 @@ public class MainWindow : Window, INotifyPropertyChanged
     private string _loggedInUser;
     private string _titleText;
     private IconChar _iconType;
+    private IAddChild _childView;
 
     #endregion
 
@@ -69,6 +71,19 @@ public class MainWindow : Window, INotifyPropertyChanged
         }
     }
 
+    public IAddChild ChildView
+    {
+        get => _childView;
+        set
+        {
+            if (_childView != value)
+            {
+                _childView = value;
+                NotifyPropertyChanged(nameof(ChildView));
+            }
+        }
+    }
+
     #endregion
 
     public MainWindow()
@@ -88,6 +103,7 @@ public class MainWindow : Window, INotifyPropertyChanged
 
         _titleText = "ToDo";
         _iconType = IconChar.ListCheck;
+        _childView = WindowLogic.CreateChildView(new ToDo());
 
     }
 
@@ -266,10 +282,13 @@ public class MainWindow : Window, INotifyPropertyChanged
 
     private ContentControl CreateMainContent()
     {
-        return new ContentControl()
+        ContentControl mainContent = new()
         {
             Margin = new Thickness(_windowMainContentMargin)
         };
+        mainContent.SetBinding(ContentControl.ContentProperty, new Binding(nameof(ChildView)));
+
+        return mainContent;
     }
 
     private Grid CreateTitleBar()
